@@ -1,0 +1,7 @@
+[project]
+dynamic = ["version"]
+name = "Montagne"
+authors = [
+    {name = "Ali Chaayb", email = "achaaybdev@gmail.com"},
+]
+description = "A frontend framework that speaks fluent Python."

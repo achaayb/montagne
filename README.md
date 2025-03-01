@@ -1,2 +1,2 @@
 # Montagne
-A frontend framework that speaks fluent Python. ⛰️
+Montagne frontend framework that speaks fluent Python. ⛰️

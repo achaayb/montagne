@@ -1,7 +1,9 @@
 [project]
 dynamic = ["version"]
-name = "Montagne"
+name = "montagne"
 authors = [
     {name = "Ali Chaayb", email = "achaaybdev@gmail.com"},
 ]
-description = "A frontend framework that speaks fluent Python."
+description = "Montagne frontend framework that speaks fluent Python."
+license = { text = "MIT" }
+readme = "README.md"

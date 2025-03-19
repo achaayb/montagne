@@ -1,0 +1,42 @@
+name: Sync Subrepos
+
+on:
+  push:
+    branches:
+      - main  # Change this if your default branch is different
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Monorepo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensures full commit history for subtree operations
+
+      - name: Setup Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Push to montagne-api
+        if: contains(github.event.head_commit.modified, 'montagne-api/')
+        run: |
+          git subtree push --prefix=subrepo1 https://x-access-token:${{ secrets.GH_PAT }}@github.com/achaayb/montagne-api.git main
+
+      - name: Push to montagne-proxy
+        if: contains(github.event.head_commit.modified, 'montagne-proxy/')
+        run: |
+          git subtree push --prefix=subrepo1 https://x-access-token:${{ secrets.GH_PAT }}@github.com/achaayb/montagne-proxy.git main
+
+      - name: Push to montagne-dashboard
+        if: contains(github.event.head_commit.modified, 'montagne-dashboard/')
+        run: |
+          git subtree push --prefix=subrepo1 https://x-access-token:${{ secrets.GH_PAT }}@github.com/achaayb/montagne-dashboard.git main
+      
+      - name: Push to montagne-worker
+        if: contains(github.event.head_commit.modified, 'montagne-worker/')
+        run: |
+          git subtree push --prefix=subrepo1 https://x-access-token:${{ secrets.GH_PAT }}@github.com/achaayb/montagne-worker.git main
+
+

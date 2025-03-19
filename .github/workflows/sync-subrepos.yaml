@@ -3,7 +3,7 @@ name: Sync Subrepos
 on:
   push:
     branches:
-      - main  # Change this if your default branch is different
+      - main  # Change if your default branch is different
 
 jobs:
   sync:
@@ -20,23 +20,37 @@ jobs:
           git config --global user.email "actions@github.com"
 
       - name: Push to montagne-api
-        if: contains(github.event.head_commit.modified, 'montagne-api/')
         run: |
-          git subtree push --prefix=subrepo1 https://x-access-token:${{ secrets.GH_PAT }}@github.com/achaayb/montagne-api.git main
+          if ! git diff --quiet HEAD^ HEAD -- montagne-api/; then
+            echo "Changes detected in montagne-api. Pushing..."
+            git subtree push --prefix=montagne-api https://x-access-token:${{ secrets.GH_PAT }}@github.com/achaayb/montagne-api.git main
+          else
+            echo "No changes in montagne-api. Skipping push."
+          fi
 
       - name: Push to montagne-proxy
-        if: contains(github.event.head_commit.modified, 'montagne-proxy/')
         run: |
-          git subtree push --prefix=subrepo1 https://x-access-token:${{ secrets.GH_PAT }}@github.com/achaayb/montagne-proxy.git main
+          if ! git diff --quiet HEAD^ HEAD -- montagne-proxy/; then
+            echo "Changes detected in montagne-proxy. Pushing..."
+            git subtree push --prefix=montagne-proxy https://x-access-token:${{ secrets.GH_PAT }}@github.com/achaayb/montagne-proxy.git main
+          else
+            echo "No changes in montagne-proxy. Skipping push."
+          fi
 
       - name: Push to montagne-dashboard
-        if: contains(github.event.head_commit.modified, 'montagne-dashboard/')
         run: |
-          git subtree push --prefix=subrepo1 https://x-access-token:${{ secrets.GH_PAT }}@github.com/achaayb/montagne-dashboard.git main
-      
+          if ! git diff --quiet HEAD^ HEAD -- montagne-dashboard/; then
+            echo "Changes detected in montagne-dashboard. Pushing..."
+            git subtree push --prefix=montagne-dashboard https://x-access-token:${{ secrets.GH_PAT }}@github.com/achaayb/montagne-dashboard.git main
+          else
+            echo "No changes in montagne-dashboard. Skipping push."
+          fi
+
       - name: Push to montagne-worker
-        if: contains(github.event.head_commit.modified, 'montagne-worker/')
         run: |
-          git subtree push --prefix=subrepo1 https://x-access-token:${{ secrets.GH_PAT }}@github.com/achaayb/montagne-worker.git main
-
-
+          if ! git diff --quiet HEAD^ HEAD -- montagne-worker/; then
+            echo "Changes detected in montagne-worker. Pushing..."
+            git subtree push --prefix=montagne-worker https://x-access-token:${{ secrets.GH_PAT }}@github.com/achaayb/montagne-worker.git main
+          else
+            echo "No changes in montagne-worker. Skipping push."
+          fi
